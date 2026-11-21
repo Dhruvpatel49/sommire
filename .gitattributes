@@ -1,0 +1,6 @@
+# Set default behavior to automatically normalize line endings
+* text=auto eol=lf
+
+# Repository language detection overrides
+*.sql linguist-detectable=false
+*.sql linguist-vendored=true
