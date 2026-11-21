@@ -6,6 +6,13 @@ Built as a modern, production-ready **MERN stack** application (MongoDB, Express
 
 ---
 
+### 🚀 **Live Demo & Deployment Links**
+- 🌐 **Live Web Application (Vercel):** [https://sommire-ai.vercel.app](https://sommire-ai.vercel.app)
+- ⚡ **Backend API (Render):** [https://sommire-api.onrender.com](https://sommire-api.onrender.com)
+- 🩺 **API Health Check:** [https://sommire-api.onrender.com/api/health](https://sommire-api.onrender.com/api/health)
+
+---
+
 ## 🏗️ Architecture & Technology Stack
 
 ### **Frontend (`client/`)**
