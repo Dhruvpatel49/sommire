@@ -24,7 +24,7 @@ app.use(
   })
 );
 
-// CORS configuration supporting credentials and client URL
+// CORS configuration supporting credentials, Vercel deployments, and client URL
 const allowedOrigins = [
   process.env.CLIENT_URL,
   'http://localhost:5173',
@@ -33,21 +33,27 @@ const allowedOrigins = [
   'http://127.0.0.1:3000',
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or Postman)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-        return callback(null, true);
-      }
-      return callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  })
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin) return callback(null, true);
+
+    const isVercel = origin.endsWith('.vercel.app');
+    const isWhitelisted = allowedOrigins.includes(origin);
+    const isDev = process.env.NODE_ENV === 'development';
+
+    if (isWhitelisted || isVercel || isDev) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Request parsing
 app.use(express.json({ limit: '10mb' }));
