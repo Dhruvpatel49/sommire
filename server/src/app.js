@@ -65,6 +65,25 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
+// Root landing endpoint
+app.get('/', (req, res) => {
+  return ApiResponse.success(
+    res,
+    {
+      name: 'Sommaire API',
+      version: '1.0.0',
+      status: 'healthy',
+      endpoints: {
+        health: '/api/health',
+        auth: '/api/auth',
+        summaries: '/api/summaries',
+        payments: '/api/payments',
+      },
+    },
+    'Welcome to Sommaire API server'
+  );
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   return ApiResponse.success(res, { status: 'healthy', timestamp: new Date().toISOString() }, 'Sommaire API is running');
